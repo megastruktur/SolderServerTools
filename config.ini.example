@@ -1,0 +1,13 @@
+[general]
+minecraft_version = "1.7.10"
+;build = "latest";
+build = "stable";
+forge_url_prefix = "http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_";
+downloads_path = "./downloads";
+builds_path = "./builds";
+
+
+[solder]
+solder_url = "https://solder.local"
+solder_api_key = "qwertyuiop1234567890"
+solder_modpack_slug = "modpack-clug"

@@ -1,0 +1,25 @@
+{
+  "name": "megastruktur/SolderServerTools",
+  "description": "Server Builder for Minecraft Solder for Technichpack.net",
+  "homepage": "https://github.com/megastruktur/SolderServerTools",
+  "license": "FOSS",
+  "keywords": ["minecraft", "api", "requests"],
+  "version": "0.1",
+  "authors": [
+      {
+          "name": "Megastruktur",
+          "email": "astromortis@gmail.com",
+          "homepage": "http://nategood.com"
+      }
+  ],
+  "require": {
+      "php": ">=5.3",
+      "paquettg/php-html-parser": "^2.2",
+      "nategood/httpful": "v0.2.20"
+  },
+  "autoload": {
+    "psr-4": {
+        "SolderServerTools\\": "src/"
+    }
+}
+}
