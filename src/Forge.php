@@ -2,7 +2,7 @@
 
 namespace SolderServerTools;
 
-use PHPHtmlParser\Dom;
+use \PHPHtmlParser\Dom;
 
 class Forge {
 
@@ -14,7 +14,9 @@ class Forge {
     'latest' => 0,
     'stable' => 1,
   ];
-  protected $is_test = TRUE;
+  
+  // Set to TRUE to get the parsed page from tests/assets
+  protected $is_test = FALSE;
 
   public $forge_download_link = '';
   public $forge_installer_filename = '';

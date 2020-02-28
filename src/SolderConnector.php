@@ -2,7 +2,7 @@
  
 namespace SolderServerTools;
 
-use Httpful\Httpful;
+use \Httpful\Httpful;
 
 require_once('./vendor/autoload.php');
 
