@@ -1,5 +1,5 @@
 {
-  "name": "megastruktur/SolderServerTools",
+  "name": "megastruktur/solder-server-tools",
   "description": "Server Builder for Minecraft Solder for Technichpack.net",
   "homepage": "https://github.com/megastruktur/SolderServerTools",
   "license": "FOSS",
@@ -9,7 +9,7 @@
       {
           "name": "Megastruktur",
           "email": "astromortis@gmail.com",
-          "homepage": "http://nategood.com"
+          "homepage": "https://solder.spcrew.club"
       }
   ],
   "require": {
@@ -21,5 +21,5 @@
     "psr-4": {
         "SolderServerTools\\": "src/"
     }
-}
+  }
 }
