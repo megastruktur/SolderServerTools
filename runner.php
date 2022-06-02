@@ -2,14 +2,10 @@
 
 require_once('./vendor/autoload.php');
 
-// Download and install Forge server.
-$config = parse_ini_file('./config.ini');
-$build_directory = $config['builds_path'] . '/' . date('Y-m-d H:i:s', time());
+$modpack_slug = $argv[1] ?? 'mymodpack';
+$modpack_version = $argv[2] ?? '1.0.0';
 
-$Forge = new \SolderServerTools\Forge();
-$Forge->installForgeServer($build_directory);
-
-$Solder = new \SolderServerTools\SolderConnector();
-$Solder->buildMods($build_directory);
+$MP = new \SolderServerTools\Modpack($modpack_slug, $modpack_version);
+$MP->buildForgeServer();
 
 echo "\n";

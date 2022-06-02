@@ -7,7 +7,6 @@ use \PHPHtmlParser\Dom;
 class Forge {
 
   protected $forge_url_prefix;
-  protected $minecraft_version;
   protected $build;
   protected $downloads_path;
   protected $build_indexes = [
@@ -25,7 +24,6 @@ class Forge {
 
     $config = parse_ini_file('./config.ini');
     $this->forge_url_prefix = $config['forge_url_prefix'];
-    $this->minecraft_version = $config['minecraft_version'];
     $this->build = $config['build'];
     $this->downloads_path = $config['downloads_path'] . '/forge';
   }
@@ -33,8 +31,9 @@ class Forge {
   /**
    * Retrieve Download Link.
    */
-  protected function getForgeDownloadLink() {
+  protected function getForgeDownloadLink($minecraft_version) {
 
+    echo "2.1 Get Forge Download Link \n";
     $download_url = FALSE;
     $installer_local_file_path = FALSE;
     
@@ -44,7 +43,7 @@ class Forge {
       $dom->loadFromFile('./tests/assets/index_1.7.10.html');
     }
     else {
-      $url = $this->forge_url_prefix . $this->minecraft_version . '.html';
+      $url = $this->forge_url_prefix . $minecraft_version . '.html';
       $dom->loadFromUrl($url);
     }
   
@@ -55,9 +54,10 @@ class Forge {
       $href = $contents[$this->build_indexes[$this->build]]->getAttribute('href');
       preg_match('/&url=(https:\/\/.*\.jar)/', $href, $matches);
   
-      if ($matches && isset($matches[1])) {
-
+      if ($matches && isset($matches[1])) {        
         $this->forge_download_link = $matches[1];
+
+        echo "Link: $this->forge_download_link \n\n";
   
         preg_match('/\/(forge-.*\.jar)/', $this->forge_download_link, $filename_match);
   
@@ -75,9 +75,11 @@ class Forge {
   /**
    * Download Forge Installer.
    */
-  protected function downloadForgeInstaller() {
+  protected function downloadForgeInstaller($minecraft_version) {
 
-    $this->getForgeDownloadLink();
+    $this->getForgeDownloadLink($minecraft_version);
+
+    echo "2.2 Downloading Forge Installer... ";
   
     // If filename found - download if necessary or take from cache.
     if ($this->forge_installer_filename) {
@@ -93,6 +95,7 @@ class Forge {
         curl_close($ch);
         file_put_contents($installer_local_file_path, $data);
       }
+      echo "... Done \n\n";
     }
     else {
       throw new \Exception('No Forge filename parsed');
@@ -102,28 +105,32 @@ class Forge {
 
   /**
    * Install Forge Server.
+   * @param Modpack $MP
    */
-  public function installForgeServer($build_directory) {
+  public function installForgeServer($MP) {
 
-    $this->downloadForgeInstaller();
+    $this->downloadForgeInstaller($MP->minecraft_version);
 
+    echo "2.3 Installing Forge Server... ";
     if ($this->forge_installer_filename) {
 
       $installer_local_file_path = $this->downloads_path . '/' . $this->forge_installer_filename;
 
       if ($installer_local_file_path && file_exists($installer_local_file_path)) {
 
-        if (!file_exists($build_directory)) {
-          mkdir($build_directory);
+        if (!file_exists($MP->modpack_version_dir)) {
+          mkdir($MP->modpack_version_dir);
         }
-        copy($installer_local_file_path, $build_directory . '/' . $this->forge_installer_filename);
+        copy($installer_local_file_path, $MP->modpack_version_dir . '/' . $this->forge_installer_filename);
 
         // Simply run the command.
-        exec('cd "' . $build_directory . '"; java -jar ' . $this->forge_installer_filename . ' --installServer');
+        exec('cd "' . $MP->modpack_version_dir . '"; java -jar ' . $this->forge_installer_filename . ' --installServer');
 
         // And remove the installer.
-        unlink($build_directory . '/' . $this->forge_installer_filename);
+        unlink($MP->modpack_version_dir . '/' . $this->forge_installer_filename);
       }
+
+      echo "... Done \n\n";
     }
     else {
       throw new \Exception('No Forge filename parsed');
