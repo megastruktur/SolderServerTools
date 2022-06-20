@@ -8,3 +8,9 @@ Builds are created at ./builds/<MODPACK SLUG>/<MODPACK VERSION> by default.
 1. Copy config.ini.example to config.ini. Modify `solder_url`, `solder_api_key`.
 2. Run `php runner.php <MODPACK SLUG> <MODPACK VERSION>`
 3. Don't forget to add "level-type" `BIOMESOP` to config before starting the server to enable Biomes-o-plenty
+
+Run shell script:
+```
+#!/bin/sh
+java -Xmx4G -jar forge-1.16.5-36.2.34.jar --port 25565 --nogui
+```
